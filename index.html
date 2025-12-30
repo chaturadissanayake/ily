@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
     <title>A Private Keepsake</title>
     
     <link rel="icon" href="Assets/favicon.ico" type="image/x-icon">
@@ -35,7 +35,7 @@
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
 
-        /* --- HERO SECTION --- */
+        /* --- HERO SECTION (ANIMATED) --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -44,30 +44,27 @@
             align-items: center;
             text-align: center;
             position: relative;
-            padding: 0 10px;
         }
 
         .recipient {
             font-family: 'Cinzel', serif;
             font-size: clamp(0.7rem, 2vw, 0.85rem);
-            letter-spacing: clamp(4px, 1.5vw, 10px); /* Scales spacing for mobile */
+            letter-spacing: 10px;
             text-transform: uppercase;
             color: var(--gold);
             margin-bottom: 25px;
             opacity: 0;
-            white-space: nowrap; /* Forces one line */
             animation: revealUp 1.2s ease forwards;
         }
 
         .hero-title {
             font-family: 'Cinzel', serif;
-            font-size: clamp(1.4rem, 6vw, 2.4rem); /* Scales down aggressively on small screens */
+            font-size: clamp(1.4rem, 6vw, 2.4rem);
             font-weight: 400;
-            letter-spacing: 2px;
+            letter-spacing: 4px;
             color: var(--ink);
             margin-bottom: 15px;
             opacity: 0;
-            white-space: nowrap; /* Forces one line */
             animation: revealUp 1.2s ease forwards 0.4s;
         }
 
@@ -84,10 +81,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- SCROLL INDICATOR --- */
+        /* --- SCROLL INDICATOR (RESTORED) --- */
         .scroll-indicator {
             position: absolute;
-            bottom: 40px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
@@ -98,7 +95,7 @@
 
         .scroll-line {
             width: 1px;
-            height: 40px;
+            height: 50px;
             background: linear-gradient(to bottom, var(--gold), transparent);
             animation: scroll-anim 2.5s infinite;
         }
@@ -110,7 +107,7 @@
             100% { transform: scaleY(0); transform-origin: bottom; }
         }
 
-        /* --- POSTCARD SECTION --- */
+        /* --- POSTCARD SECTION (MOBILE ENHANCED) --- */
         .card-view {
             perspective: 2000px;
             margin: 5vh 0 10vh;
@@ -126,16 +123,16 @@
             cursor: pointer;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.06);
+            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.06);
+            touch-action: manipulation;
         }
 
         .postcard.flipped { transform: rotateY(180deg); }
 
         .face {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             backface-visibility: hidden;
             -webkit-backface-visibility: hidden;
             background: #fff;
@@ -156,12 +153,13 @@
             opacity: 0.4;
         }
 
-        /* --- ACTIONS --- */
+        /* --- ACTIONS (RESTORED) --- */
         .actions {
             display: flex;
             justify-content: center;
             gap: 40px;
             margin-bottom: 15vh;
+            padding-top: 20px;
         }
 
         .btn-save {
@@ -177,11 +175,11 @@
 
         .btn-save:hover { opacity: 0.5; border-bottom-color: var(--ink); }
 
-        /* --- STORY NARRATIVE --- */
+        /* --- STORY NARRATIVE (SCROLL REVEAL) --- */
         .story { max-width: 650px; margin: 0 auto; }
         
         .block {
-            margin-bottom: 120px;
+            margin-bottom: 140px;
             opacity: 0;
             transform: translateY(30px);
             transition: all 1.2s cubic-bezier(0.2, 0.1, 0.2, 1);
@@ -191,21 +189,20 @@
 
         h2 {
             font-family: 'Cinzel', serif;
-            font-size: clamp(0.75rem, 2vw, 0.85rem);
-            letter-spacing: clamp(2px, 1vw, 5px);
+            font-size: 0.85rem;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             color: var(--gold);
-            white-space: nowrap; /* Prevents titles from breaking */
         }
 
         p {
-            font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+            font-size: clamp(1.1rem, 2.5vw, 1.2rem);
             text-align: justify;
             font-weight: 300;
         }
 
-        /* --- FOOTER --- */
+        /* --- FOOTER (FIXED CENTERING) --- */
         footer {
             padding: 100px 0 60px;
             text-align: center;
@@ -217,11 +214,10 @@
 
         .signature {
             font-family: 'Cinzel', serif;
-            font-size: clamp(0.65rem, 2vw, 0.8rem);
-            letter-spacing: clamp(3px, 1vw, 6px);
+            font-size: 0.75rem;
+            letter-spacing: 6px;
             text-transform: uppercase;
             margin-bottom: 20px;
-            white-space: nowrap; /* Forces signature on one line */
             width: 100%;
         }
 
@@ -234,19 +230,15 @@
             font-style: italic;
         }
 
-        /* --- DEVICE SPECIFIC FIXES --- */
+        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
-            .container { padding: 0 20px; }
-            .hero { height: 80vh; }
+            .container { padding: 0 25px; }
+            .hero { height: 85vh; }
             .actions { flex-direction: column; align-items: center; gap: 20px; }
-            p { text-align: left; line-height: 2.1; }
-            .block { margin-bottom: 80px; }
-        }
-
-        @media (max-width: 380px) {
-            /* Extra safety for very small phones like iPhone SE */
-            .recipient, .signature { letter-spacing: 3px; }
-            .hero-title { font-size: 1.3rem; }
+            p { text-align: left; line-height: 2.2; }
+            .block { margin-bottom: 100px; }
+            /* Postcard fits width better on mobile */
+            .postcard { max-width: 100%; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
         }
     </style>
 </head>
@@ -320,10 +312,10 @@
             postcard.classList.toggle('flipped');
         });
 
-        // Robust Scroll Reveal Logic
+        // Scroll Reveal Logic (RESTORED & TESTED)
         const blocks = document.querySelectorAll('.block');
         const observerOptions = { 
-            threshold: 0.1,
+            threshold: 0.1, 
             rootMargin: "0px 0px -50px 0px" 
         };
 
