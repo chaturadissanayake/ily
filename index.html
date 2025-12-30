@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>A Private Keepsake</title>
     
     <link rel="icon" href="Assets/favicon.ico" type="image/x-icon">
@@ -17,7 +17,6 @@
         :root {
             --bg: #fdfcf9;
             --ink: #1a1a1a;
-            --accent: #8b2626;
             --gold: #b2935b;
             --line-height: 2.4; 
         }
@@ -35,7 +34,7 @@
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 30px; }
 
-        /* --- HERO SECTION (ANIMATED) --- */
+        /* --- HERO SECTION --- */
         .hero {
             height: 100vh;
             display: flex;
@@ -81,7 +80,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- SCROLL INDICATOR (RESTORED) --- */
+        /* --- SCROLL INDICATOR --- */
         .scroll-indicator {
             position: absolute;
             bottom: 50px;
@@ -107,7 +106,7 @@
             100% { transform: scaleY(0); transform-origin: bottom; }
         }
 
-        /* --- POSTCARD SECTION (MOBILE ENHANCED) --- */
+        /* --- POSTCARD SECTION --- */
         .card-view {
             perspective: 2000px;
             margin: 5vh 0 10vh;
@@ -123,9 +122,8 @@
             cursor: pointer;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
             box-shadow: 0 40px 80px rgba(0,0,0,0.06);
-            touch-action: manipulation;
         }
 
         .postcard.flipped { transform: rotateY(180deg); }
@@ -143,23 +141,62 @@
         .face img { width: 100%; height: 100%; object-fit: cover; display: block; }
         .back { transform: rotateY(180deg); }
 
-        .hint {
-            text-align: center;
-            margin-top: 30px;
-            font-family: 'Cinzel', serif;
-            font-size: 0.6rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            opacity: 0.4;
+        /* --- FOCUS LIGHTBOX (THE "INSTAGRAM" STYLE) --- */
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(253, 252, 249, 0.98);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
-        /* --- ACTIONS (RESTORED) --- */
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            width: 90vw;
+            max-width: 1100px;
+            aspect-ratio: 1365 / 768;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* Rotation for Mobile Legibility */
+        @media (max-width: 768px) {
+            .lightbox-content {
+                width: 90vh; /* Takes height of screen */
+                transform: rotate(90deg); /* Rotates for full screen read */
+            }
+            /* Reverse flip logic when rotated */
+            .lightbox-content.flipped {
+                transform: rotate(90deg) rotateY(180deg);
+            }
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 30px; right: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.7rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* --- ACTIONS & STORY --- */
         .actions {
             display: flex;
             justify-content: center;
             gap: 40px;
             margin-bottom: 15vh;
-            padding-top: 20px;
         }
 
         .btn-save {
@@ -170,39 +207,14 @@
             color: var(--ink);
             padding-bottom: 5px;
             border-bottom: 1px solid var(--gold);
-            transition: 0.3s ease;
         }
 
-        .btn-save:hover { opacity: 0.5; border-bottom-color: var(--ink); }
-
-        /* --- STORY NARRATIVE (SCROLL REVEAL) --- */
         .story { max-width: 650px; margin: 0 auto; }
-        
-        .block {
-            margin-bottom: 140px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.2s cubic-bezier(0.2, 0.1, 0.2, 1);
-        }
-
+        .block { margin-bottom: 140px; opacity: 0; transform: translateY(30px); transition: 1.2s; }
         .block.visible { opacity: 1; transform: translateY(0); }
+        h2 { font-family: 'Cinzel', serif; font-size: 0.85rem; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 30px; color: var(--gold); }
+        p { font-size: clamp(1.1rem, 2.5vw, 1.2rem); text-align: justify; font-weight: 300; }
 
-        h2 {
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            margin-bottom: 30px;
-            color: var(--gold);
-        }
-
-        p {
-            font-size: clamp(1.1rem, 2.5vw, 1.2rem);
-            text-align: justify;
-            font-weight: 300;
-        }
-
-        /* --- FOOTER (FIXED CENTERING) --- */
         footer {
             padding: 100px 0 60px;
             text-align: center;
@@ -212,113 +224,108 @@
             align-items: center;
         }
 
-        .signature {
-            font-family: 'Cinzel', serif;
-            font-size: 0.75rem;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+        .signature { font-family: 'Cinzel', serif; font-size: 0.75rem; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 20px; }
+        .disclaimer { font-size: 0.65rem; opacity: 0.3; font-style: italic; }
 
-        .disclaimer {
-            font-size: 0.65rem;
-            max-width: 480px;
-            margin: 0 auto;
-            opacity: 0.3;
-            line-height: 1.8;
-            font-style: italic;
-        }
-
-        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
-            .container { padding: 0 25px; }
-            .hero { height: 85vh; }
             .actions { flex-direction: column; align-items: center; gap: 20px; }
-            p { text-align: left; line-height: 2.2; }
-            .block { margin-bottom: 100px; }
-            /* Postcard fits width better on mobile */
-            .postcard { max-width: 100%; box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
         }
     </style>
 </head>
 <body>
+
+<div class="lightbox" id="lightbox">
+    <div class="close-lightbox" id="closeBtn">Close View</div>
+    <div class="lightbox-content" id="lightboxCard">
+        <div class="face front">
+            <img src="Assets/Letter Front.png" alt="Front">
+        </div>
+        <div class="face back">
+            <img src="Assets/Letter Back.png" alt="Back">
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <header class="hero">
         <span class="recipient">To: Imali</span>
         <h1 class="hero-title">All because I love you</h1>
         <p class="hero-sub">A digital keepsake.</p>
-        
         <div class="scroll-indicator">
             <span class="scroll-line"></span>
         </div>
     </header>
 
     <section class="card-view">
-        <div class="postcard" id="postcard">
+        <div class="postcard" id="mainPostcard">
             <div class="face front">
-                <img src="Assets/Letter Front.png" alt="Letter Front">
+                <img src="Assets/Letter Front.png" alt="Front">
             </div>
             <div class="face back">
-                <img src="Assets/Letter Back.png" alt="Letter Back">
+                <img src="Assets/Letter Back.png" alt="Back">
             </div>
         </div>
-        <p class="hint">Tap to flip the card</p>
+        <p class="hint" id="expandHint" style="cursor:pointer; margin-top:20px;">Tap to Expand & Read</p>
     </section>
 
     <div class="actions">
-        <a href="Assets/Letter Front.png" download="Keepsake_Front" class="btn-save">Save Front Image</a>
-        <a href="Assets/Letter Back.png" download="Keepsake_Back" class="btn-save">Save Back Image</a>
+        <a href="Assets/Letter Front.png" download class="btn-save">Save Front Image</a>
+        <a href="Assets/Letter Back.png" download class="btn-save">Save Back Image</a>
     </div>
 
     <article class="story">
         <div class="block">
             <h2>The Recognition</h2>
-            <p>
-                In a season defined by quiet transitions and the simple weight of life, our paths crossed. I was navigating a period of reflection, and finding you felt less like a chance encounter and more like a long-awaited recognition. Distance meant very little once the conversation truly began.
-            </p>
+            <p>In a season defined by quiet transitions and the simple weight of life, our paths crossed. I was navigating a period of reflection, and finding you felt less like a chance encounter and more like a long-awaited recognition. Distance meant very little once the conversation truly began.</p>
         </div>
-
         <div class="block">
             <h2>The Alignment</h2>
-            <p>
-                It is rare to find a connection that feels like a puzzle piece finally clicking into place. With you, there is an effortless energy that brings out the absolute best in us. We have navigated our journey with an unwavering honesty, unlearning old patterns to make room for something far more beautiful.
-            </p>
+            <p>It is rare to find a connection that feels like a puzzle piece finally clicking into place. With you, there is an effortless energy that brings out the absolute best in us. We have navigated our journey with an unwavering honesty, unlearning old patterns to make room for something far more beautiful.</p>
         </div>
-
         <div class="block">
             <h2>The Moment</h2>
-            <p>
-                Those days in the hills were a realization of how being in the moment—with you—is enough. Seeing you there, my girl with a flower, captured the essence of why meeting you has made me love myself more. No matter where the road leads, this space we have built remains.
-            </p>
+            <p>Those days in the hills were a realization of how being in the moment—with you—is enough. Seeing you there, my girl with a flower, captured the essence of why meeting you has made me love myself more. No matter where the road leads, this space we have built remains.</p>
         </div>
     </article>
 
     <footer>
         <span class="signature">Created for Her by Chatura</span>
-        <div class="disclaimer">
-            This narrative and creative vision are original works. Structural layout and visual grids were developed with technical assistance from Gemini.
-        </div>
+        <div class="disclaimer">This narrative and creative vision are original works. Structural layout and visual grids were developed with technical assistance from Gemini.</div>
     </footer>
 </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const postcard = document.getElementById('postcard');
-        
-        // Postcard Flip Logic
-        postcard.addEventListener('click', () => {
-            postcard.classList.toggle('flipped');
-        });
+        const mainPostcard = document.getElementById('mainPostcard');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxCard = document.getElementById('lightboxCard');
+        const closeBtn = document.getElementById('closeBtn');
+        const expandHint = document.getElementById('expandHint');
 
-        // Scroll Reveal Logic (RESTORED & TESTED)
-        const blocks = document.querySelectorAll('.block');
-        const observerOptions = { 
-            threshold: 0.1, 
-            rootMargin: "0px 0px -50px 0px" 
+        // Logic to Open Lightbox (Read Mode)
+        const openLightbox = () => {
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Stop scrolling main site
         };
 
+        mainPostcard.addEventListener('click', openLightbox);
+        expandHint.addEventListener('click', openLightbox);
+
+        // Logic to Close Lightbox
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        };
+
+        closeBtn.addEventListener('click', closeLightbox);
+        
+        // Flip inside Lightbox
+        lightboxCard.addEventListener('click', (e) => {
+            lightboxCard.classList.toggle('flipped');
+        });
+
+        // Scroll Reveal
+        const blocks = document.querySelectorAll('.block');
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -326,7 +333,7 @@
                     observer.unobserve(entry.target);
                 }
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
         blocks.forEach(block => observer.observe(block));
     });
