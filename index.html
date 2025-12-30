@@ -44,7 +44,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- PRELOADER (Visual Polish) --- */
+        /* --- PRELOADER --- */
         #preloader {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -63,7 +63,6 @@
         /* --- HERO --- */
         .hero {
             height: 100vh;
-            /* Fix for mobile browser bars */
             min-height: -webkit-fill-available; 
             display: flex;
             flex-direction: column;
@@ -110,7 +109,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- SCROLL INDICATOR (Refined) --- */
+        /* --- SCROLL INDICATOR --- */
         .scroll-indicator {
             position: absolute;
             bottom: 30px;
@@ -120,8 +119,8 @@
             flex-direction: column;
             align-items: center;
             gap: 10px;
-            opacity: 0; /* Hidden initially */
-            animation: fadeIn 1s ease forwards 2s; /* Delayed appearance */
+            opacity: 0; 
+            animation: fadeIn 1s ease forwards 2s; 
         }
 
         .scroll-text {
@@ -141,7 +140,6 @@
             overflow: hidden;
         }
 
-        /* Running light effect on the line */
         .scroll-line::after {
             content: '';
             position: absolute;
@@ -156,7 +154,7 @@
         }
         @keyframes fadeIn { to { opacity: 1; } }
 
-        /* --- POSTCARD SECTION --- */
+        /* --- MAIN VIEW POSTCARD --- */
         .card-view {
             perspective: 2000px;
             margin: var(--luxury-gap) 0;
@@ -208,7 +206,7 @@
         .btn-expand:hover { border-bottom-color: var(--gold); }
         .btn-expand:active { opacity: 0.6; }
 
-        /* --- LIGHTBOX (MOBILE SAFE ZONE) --- */
+        /* --- LIGHTBOX (READ MODE) --- */
         .lightbox {
             position: fixed;
             top: 0; left: 0; 
@@ -232,14 +230,19 @@
             position: relative;
             transform-style: preserve-3d;
             transition: transform 1s var(--transition);
+            cursor: pointer; /* BUG FIX: Shows interactivity on desktop */
         }
+
+        /* BUG FIX: Desktop Flip Logic */
+        .lightbox-card.flipped { transform: rotateY(180deg); }
 
         @media (max-width: 768px) {
             .lightbox-card {
-                /* Reduced height ensures strictly no overlap with bottom button */
+                /* Safe Zone for Close Button */
                 width: 65vh; 
                 transform: rotate(90deg);
             }
+            /* Mobile Flip Override */
             .lightbox-card.flipped { transform: rotate(90deg) rotateY(180deg); }
         }
 
@@ -422,7 +425,7 @@
 </div>
 
 <script>
-    // Remove Preloader when loaded
+    // Remove Preloader
     window.addEventListener('load', () => {
         const preloader = document.getElementById('preloader');
         preloader.classList.add('hidden');
